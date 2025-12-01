@@ -1,0 +1,2088 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Registration System</title><!-- Element SDK -->
+  <script src="/_sdk/element_sdk.js"></script><!-- Data SDK -->
+  <script src="/_sdk/data_sdk.js"></script><!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    /* ---------- (ALL ORIGINAL CSS PRESERVED) ---------- */
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+    
+    body {
+      font-family: 'Poppins', 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+      color: #1a1a2e;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    
+    .main-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .site-title {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    
+    .site-tagline {
+      font-size: 18px;
+      color: #5a6c7d;
+      font-weight: 500;
+    }
+    
+    /* Main Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+    
+    /* Form Container */
+    .form-container {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+    }
+    
+    .form-heading {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .form-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ffd93d, #ffb800);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    label {
+      display: block;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    .required {
+      color: #e74c3c;
+      margin-left: 4px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e6ed;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+    }
+    
+    input.error,
+    select.error {
+      border-color: #e74c3c;
+    }
+    
+    .error-message {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    /* Radio Buttons */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    
+    input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #2a5298;
+    }
+    
+    .radio-label {
+      font-weight: 500;
+      color: #34495e;
+      cursor: pointer;
+    }
+    
+    /* UPI Section */
+    .upi-section {
+      display: none;
+      margin-top: 16px;
+      padding: 20px;
+      background: linear-gradient(135deg, #e8f4f8, #d4e9f7);
+      border-radius: 12px;
+      border: 2px solid #2a5298;
+    }
+    
+    .upi-section.show {
+      display: block;
+    }
+    
+    .upi-id-display {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3c72;
+      text-align: center;
+      padding: 16px;
+      background: white;
+      border-radius: 10px;
+      margin: 12px 0;
+      letter-spacing: 0.5px;
+      word-break: break-all;
+    }
+    
+    .upi-instruction {
+      font-size: 13px;
+      color: #5a6c7d;
+      text-align: center;
+      margin-top: 8px;
+    }
+    
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ffd93d, #ffb800);
+      color: #1a1a2e;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 24px;
+      box-shadow: 0 6px 20px rgba(255, 184, 0, 0.4);
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 184, 0, 0.5);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    /* Summary Card */
+    .summary-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+      position: sticky;
+      top: 20px;
+    }
+    
+    .summary-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .summary-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #e0e6ed;
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    
+    .summary-label {
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    
+    .summary-value {
+      font-size: 16px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    
+    .total-amount {
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffd93d, #ffb800);
+      border-radius: 12px;
+      text-align: center;
+    }
+    
+    .total-label {
+      font-size: 14px;
+      color: #1a1a2e;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    
+    .total-value {
+      font-size: 32px;
+      color: #1a1a2e;
+      font-weight: 800;
+    }
+    
+    /* Venue Section */
+    .venue-section {
+      margin-top: 24px;
+      padding: 20px;
+      background: linear-gradient(135deg, #e8f4f8, #d4e9f7);
+      border-radius: 12px;
+    }
+    
+    .venue-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin-bottom: 12px;
+    }
+    
+    .venue-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .venue-item {
+      padding: 10px 0;
+      font-size: 14px;
+      color: #34495e;
+      border-bottom: 1px dashed #b8d4e8;
+    }
+    
+    .venue-item:last-child {
+      border-bottom: none;
+    }
+    
+    .venue-name {
+      font-weight: 600;
+      color: #2a5298;
+    }
+    
+    /* Success Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+    
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ffd93d, #ffb800);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 40px;
+    }
+    
+    .modal-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin-bottom: 12px;
+    }
+    
+    .modal-message {
+      font-size: 16px;
+      color: #5a6c7d;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    
+    .modal-btn {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 8px;
+    }
+    
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+    }
+    
+    .download-btn {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+    }
+    
+    .download-btn:hover {
+      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+    }
+    
+    /* Receipt Styles */
+    .receipt-container {
+      display: none;
+      position: fixed;
+      left: -9999px;
+      background: white;
+      width: 800px;
+      padding: 40px;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+    
+    .receipt-header {
+      text-align: center;
+      border-bottom: 3px solid #1e3c72;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .receipt-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1e3c72;
+      margin-bottom: 8px;
+    }
+    
+    .receipt-subtitle {
+      font-size: 16px;
+      color: #5a6c7d;
+    }
+    
+    .receipt-info {
+      margin-bottom: 30px;
+    }
+    
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e6ed;
+    }
+    
+    .receipt-label {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .receipt-value {
+      color: #34495e;
+    }
+    
+    .receipt-total {
+      background: #f8f9fa;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .receipt-total-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .receipt-total-amount {
+      font-size: 36px;
+      font-weight: 800;
+      color: #1e3c72;
+    }
+    
+    .receipt-footer {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e0e6ed;
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+    
+    /* Event Costs Info */
+    .event-costs-info {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #5a6c7d;
+    }
+    
+    .cost-note {
+      font-weight: 600;
+      color: #2a5298;
+      margin-bottom: 8px;
+    }
+    
+    /* Registration Card */
+    .registration-card {
+      background: white;
+      border: 2px solid #e0e6ed;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .registration-card:hover {
+      border-color: #2a5298;
+      box-shadow: 0 4px 12px rgba(42, 82, 152, 0.1);
+    }
+    
+    .registration-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e0e6ed;
+    }
+    
+    .registration-receipt-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e3c72;
+    }
+    
+    .registration-date {
+      font-size: 13px;
+      color: #7f8c8d;
+    }
+    
+    .registration-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .registration-detail {
+      font-size: 14px;
+    }
+    
+    .registration-detail-label {
+      color: #7f8c8d;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .registration-detail-value {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+    
+    .registration-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 2px solid #e0e6ed;
+    }
+    
+    .registration-total {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1e3c72;
+    }
+    
+    .download-single-btn {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .download-single-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .summary-card {
+        position: static;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+      
+      .site-title {
+        font-size: 32px;
+      }
+      
+      .form-container {
+        padding: 24px;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .radio-group {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+
+  <!-- EMAILJS SDK (for sending emails) -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <script>
+    // <-- Replace YOUR_EMAILJS_PUBLIC_KEY below with your EmailJS public key -->
+    (function() {
+      if (window.emailjs) {
+        emailjs.init('YOUR_EMAILJS_PUBLIC_KEY');
+      }
+    })();
+  </script>
+ </head>
+ <body>
+  <div class="main-wrapper">
+   <header role="banner">
+    <h1 class="site-title" id="site_title">Premium Event Registration</h1>
+    <p class="site-tagline" id="site_tagline">Book Your Perfect Event Experience Today</p>
+   </header>
+   <main role="main" class="content-grid"><!-- Registration Form -->
+    <section class="form-container">
+     <h2 class="form-heading" id="form_heading"><span class="form-icon">📋</span> Event Registration Form</h2>
+     <form id="registrationForm" novalidate><!-- Personal Information -->
+      <div class="form-row">
+       <div class="form-group"><label for="fullName">Full Name <span class="required">*</span></label> <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+        <div class="error-message" id="error_fullName">
+         Please enter your full name
+        </div>
+       </div>
+       <div class="form-group"><label for="email">Email Address <span class="required">*</span></label> <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+        <div class="error-message" id="error_email">
+         Please enter a valid email address
+        </div>
+       </div>
+      </div>
+      <div class="form-group"><label for="mobile">Mobile Number <span class="required">*</span></label> <input type="tel" id="mobile" name="mobile" placeholder="Enter 10-digit mobile number" required>
+       <div class="error-message" id="error_mobile">
+        Please enter a valid 10-digit mobile number
+       </div>
+      </div><!-- Event Details -->
+      <div class="form-group"><label for="eventType">Event Type <span class="required">*</span></label> <select id="eventType" name="eventType" required> <option value="">-- Select Event Type --</option> <option value="Startup Pitch" data-cost="250">Startup Pitch - ₹250/person</option> <option value="Meetup" data-cost="150">Meetup - ₹150/person</option> <option value="Photography Walk" data-cost="200">Photography Walk - ₹200/person</option> <option value="Theater Play" data-cost="300">Theater Play - ₹300/person</option> <option value="Food Festival" data-cost="400">Food Festival - ₹400/person</option> <option value="Dance Show" data-cost="350">Dance Show - ₹350/person</option> <option value="Art and Craft Fair" data-cost="180">Art and Craft Fair - ₹180/person</option> <option value="Networking Breakfast" data-cost="220">Networking Breakfast - ₹220/person</option> <option value="Hackathon" data-cost="500">Hackathon - ₹500/person</option> <option value="Tech Fest" data-cost="450">Tech Fest - ₹450/person</option> <option value="Conference" data-cost="600">Conference - ₹600/person</option> <option value="Seminar" data-cost="280">Seminar - ₹280/person</option> <option value="Workshop" data-cost="320">Workshop - ₹320/person</option> <option value="Webinar" data-cost="150">Webinar - ₹150/person</option> </select>
+       <div class="error-message" id="error_eventType">
+        Please select an event type
+       </div>
+      </div>
+      <div class="form-group"><label for="eventDate">Event Date <span class="required">*</span></label> <input type="date" id="eventDate" name="eventDate" required>
+       <div class="error-message" id="error_eventDate">
+        Please select an event date
+       </div>
+      </div>
+      <div class="form-group"><label for="venue">Select Venue <span class="required">*</span></label> <select id="venue" name="venue" required> <option value="">-- Select Venue --</option> <option value="Grand Royale Banquet Hall, MG Road, Sector 14" data-base-cost="5000">Grand Royale Banquet Hall - MG Road, Sector 14 (Base: ₹5,000)</option> <option value="Crystal Palace Convention Center, Jubilee Hills, Phase 2" data-base-cost="8000">Crystal Palace Convention Center - Jubilee Hills, Phase 2 (Base: ₹8,000)</option> <option value="The Heritage Auditorium, Old City, Heritage Lane" data-base-cost="4500">The Heritage Auditorium - Old City, Heritage Lane (Base: ₹4,500)</option> <option value="Skyline Events Arena, Tech Park, IT Corridor" data-base-cost="7000">Skyline Events Arena - Tech Park, IT Corridor (Base: ₹7,000)</option> <option value="Emerald Gardens Function Hall, Green Valley, Ring Road" data-base-cost="6000">Emerald Gardens Function Hall - Green Valley, Ring Road (Base: ₹6,000)</option> <option value="Metropolitan Conference Hall, Business District, Tower 3" data-base-cost="9000">Metropolitan Conference Hall - Business District, Tower 3 (Base: ₹9,000)</option> <option value="Sapphire Celebration Center, Lake View, Waterfront" data-base-cost="7500">Sapphire Celebration Center - Lake View, Waterfront (Base: ₹7,500)</option> <option value="Imperial Ballroom &amp; Events, Downtown, Central Plaza" data-base-cost="10000">Imperial Ballroom &amp; Events - Downtown, Central Plaza (Base: ₹10,000)</option> <option value="Platinum Pavilion, Airport Road, Mile 5" data-base-cost="6500">Platinum Pavilion - Airport Road, Mile 5 (Base: ₹6,500)</option> <option value="Majestic Halls &amp; Conventions, University Area, Campus Drive" data-base-cost="5500">Majestic Halls &amp; Conventions - University Area, Campus Drive (Base: ₹5,500)</option> </select>
+       <div class="error-message" id="error_venue">
+        Please select a venue
+       </div>
+       <div style="margin-top: 8px; font-size: 12px; color: #5a6c7d; font-style: italic;">
+        Note: Final venue cost = Base cost + (Duration multiplier × Base cost)
+       </div>
+      </div>
+      <div class="form-group"><label for="duration">Event Duration <span class="required">*</span></label> <select id="duration" name="duration" required> <option value="">-- Select Duration --</option> <option value="1 Hour" data-multiplier="0.3">1 Hour (30% of base cost)</option> <option value="2 Hours" data-multiplier="0.5">2 Hours (50% of base cost)</option> <option value="3 Hours" data-multiplier="0.7">3 Hours (70% of base cost)</option> <option value="Half Day (4-5 Hours)" data-multiplier="1.0">Half Day 4-5 Hours (100% of base cost)</option> <option value="Full Day (9 AM - 5 PM)" data-multiplier="1.5">Full Day 9 AM - 5 PM (150% of base cost)</option> </select>
+       <div class="error-message" id="error_duration">
+        Please select event duration
+       </div>
+       <div style="margin-top: 8px; font-size: 12px; color: #5a6c7d; font-style: italic;">
+        Duration cost is calculated as a percentage of the venue's base cost
+       </div>
+      </div>
+      <div class="form-group"><label for="attendees">Number of Attendees <span class="required">*</span></label> <input type="number" id="attendees" name="attendees" min="1" placeholder="Enter number of people attending" required>
+       <div class="error-message" id="error_attendees">
+        Please enter number of attendees (minimum 1)
+       </div>
+      </div>
+      <div class="form-row">
+       <div class="form-group"><label for="costPerPerson">Cost Per Person (Event)</label> <input type="text" id="costPerPerson" name="costPerPerson" value="₹150" readonly style="background: #f0f0f0; cursor: not-allowed;">
+       </div>
+       <div class="form-group"><label for="venueCost">Venue Cost (Duration)</label> <input type="text" id="venueCost" name="venueCost" value="₹0" readonly style="background: #f0f0f0; cursor: not-allowed;">
+       </div>
+      </div><!-- Payment Mode -->
+      <div class="form-group"><label>Payment Mode <span class="required">*</span></label>
+       <div class="radio-group">
+        <div class="radio-option"><input type="radio" id="upi" name="paymentMode" value="UPI" required> <label for="upi" class="radio-label">UPI Payment</label>
+        </div>
+        <div class="radio-option"><input type="radio" id="cod" name="paymentMode" value="Cash on Delivery"> <label for="cod" class="radio-label">Cash on Delivery</label>
+        </div>
+       </div>
+       <div class="error-message" id="error_paymentMode">
+        Please select a payment mode
+       </div>
+      </div><!-- UPI Section -->
+      <div class="upi-section" id="upiSection">
+       <div class="venue-title">
+        💳 UPI Payment Details
+       </div>
+       <div class="upi-id-display" id="upiIdDisplay">
+        7013539146@ibl
+       </div><!-- QR Code -->
+       <div style="text-align: center; margin: 20px 0;">
+        <div style="background: white; padding: 16px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+         <canvas id="qrCodeCanvas" width="200" height="200"></canvas>
+        </div>
+        <p style="font-size: 13px; color: #5a6c7d; margin-top: 12px; font-weight: 600;">Scan QR Code to Pay</p>
+       </div>
+       <p class="upi-instruction">Scan the QR code above OR click the button below to open your UPI app</p><button type="button" class="submit-btn" id="payNowBtn" style="margin-top: 16px; background: linear-gradient(135deg, #27ae60, #2ecc71);"> 💳 Open UPI App to Pay </button>
+       <div style="margin-top: 16px; padding: 12px; background: rgba(255, 255, 255, 0.7); border-radius: 8px; font-size: 13px; color: #2c3e50;"><strong>Amount to Pay:</strong> <span id="upiAmountDisplay" style="font-size: 18px; font-weight: 700; color: #1e3c72;">₹0</span>
+       </div>
+      </div><button type="submit" class="submit-btn" id="submit_btn"> <span id="submit_button_text">Complete Registration &amp; Payment</span> </button>
+     </form>
+    </section><!-- Summary Card -->
+    <aside class="summary-card">
+     <h3 class="summary-title">📊 Booking Summary</h3>
+     <div class="summary-item">
+      <div class="summary-label">
+       Full Name
+      </div>
+      <div class="summary-value" id="summary_name">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Email
+      </div>
+      <div class="summary-value" id="summary_email">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Mobile
+      </div>
+      <div class="summary-value" id="summary_mobile">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Event Type
+      </div>
+      <div class="summary-value" id="summary_event">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Event Date
+      </div>
+      <div class="summary-value" id="summary_date">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Selected Venue
+      </div>
+      <div class="summary-value" id="summary_venue">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Event Duration
+      </div>
+      <div class="summary-value" id="summary_duration">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Number of Attendees
+      </div>
+      <div class="summary-value" id="summary_attendees">
+       —
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Cost Per Person (Event)
+      </div>
+      <div class="summary-value" id="summary_cost">
+       ₹150  This is half part of the whole code. I will send in two more parts See this and analyze and as I said Think in the customer point of view, if required any modifications, don't change the entire code, add the feature. That's all As I said, both of them should get the mail as I need an organizer for me and for the user They have to get the mail so that they can download the receipt The details will be in the receipt
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Venue Cost
+      </div>
+      <div class="summary-value" id="summary_venue_cost">
+       ₹0
+      </div>
+     </div>
+     <div class="summary-item">
+      <div class="summary-label">
+       Payment Mode
+      </div>
+      <div class="summary-value" id="summary_payment">
+       —
+      </div>
+     </div>
+     <div class="total-amount">
+      <div class="total-label">
+       Total Amount
+      </div>
+      <div class="total-value" id="total_amount">
+       ₹0
+      </div>
+      <div style="font-size: 12px; margin-top: 8px; opacity: 0.9;">
+       (Event Cost + Venue Cost)
+      </div>
+     </div>
+    </aside>
+   </main><!-- Organizer Dashboard -->
+   <section style="margin-top: 40px; padding: 32px; background: rgba(255, 255, 255, 0.98); border-radius: 20px; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+     <h2 style="font-size: 28px; font-weight: 700; color: #1e3c72; display: flex; align-items: center; gap: 12px;"><span style="width: 40px; height: 40px; background: linear-gradient(135deg, #ffd93d, #ffb800); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">📊</span> Organizer Dashboard - All Registrations</h2>
+    </div>
+    <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, #e8f4f8, #d4e9f7); border-radius: 12px;">
+     <div style="display: flex; justify-content: space-around; text-align: center;">
+      <div>
+       <div style="font-size: 32px; font-weight: 800; color: #1e3c72;" id="totalRegistrations">
+        0
+       </div>
+       <div style="font-size: 14px; color: #5a6c7d; font-weight: 600;">
+        Total Registrations
+       </div>
+      </div>
+      <div>
+       <div style="font-size: 32px; font-weight: 800; color: #1e3c72;" id="totalRevenue">
+        ₹0
+       </div>
+       <div style="font-size: 14px; color: #5a6c7d; font-weight: 600;">
+        Total Revenue
+       </div>
+      </div>
+      <div>
+       <div style="font-size: 32px; font-weight: 800; color: #1e3c72;" id="totalAttendees">
+        0
+       </div>
+       <div style="font-size: 14px; color: #5a6c7d; font-weight: 600;">
+        Total Attendees
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="registrationsList" style="margin-top: 24px;">
+     <p style="text-align: center; color: #7f8c8d; padding: 40px;">No registrations yet. Registrations will appear here automatically.</p>
+    </div>
+   </section><!-- Footer -->
+   <footer role="contentinfo" style="margin-top: 40px; padding: 30px; background: rgba(255, 255, 255, 0.95); border-radius: 20px; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);">
+    <h3 style="font-size: 20px; font-weight: 700; color: #1e3c72; margin-bottom: 16px;">📞 Contact Us</h3>
+    <p style="font-size: 16px; color: #2c3e50; margin-bottom: 8px;"><strong>Phone:</strong> <a href="tel:7013539146" style="color: #2a5298; text-decoration: none; font-weight: 600;">7013539146</a></p>
+    <p style="font-size: 16px; color: #2c3e50; margin-bottom: 16px;"><strong>Email:</strong> <a href="mailto:sagarika7013@gmail.com" style="color: #2a5298; text-decoration: none; font-weight: 600;">sagarika7013@gmail.com</a></p>
+    <p style="font-size: 14px; color: #7f8c8d; margin-top: 12px;">For any queries or assistance with your event registration, feel free to reach out to us!</p>
+   </footer>
+  </div><!-- Success Modal -->
+  <div class="modal" id="successModal" role="dialog" aria-labelledby="modal_title" aria-modal="true">
+   <div class="modal-content">
+    <div class="success-icon">
+     ✓
+    </div>
+    <h2 class="modal-title" id="modal_title">Registration Successful!</h2>
+    <p class="modal-message" id="success_message">Thank you for registering! Your receipt has been automatically generated. Confirmation emails with receipt have been sent to both you and our event organizer (sagarika7013@gmail.com).</p><button class="modal-btn download-btn" id="downloadReceipt">📥 Download Receipt</button> <button class="modal-btn" id="closeModal">Close</button>
+   </div>
+  </div><!-- Hidden Receipt Template -->
+  <div class="receipt-container" id="receiptContainer">
+   <div class="receipt-header">
+    <div class="receipt-title">
+     EVENT REGISTRATION RECEIPT
+    </div>
+    <div class="receipt-subtitle">
+     Premium Event Registration System
+    </div>
+    <div style="margin-top: 12px; font-size: 14px; color: #7f8c8d;">
+     Receipt #<span id="receipt_number"></span> | Date: <span id="receipt_date"></span>
+    </div>
+   </div>
+   <div class="receipt-info">
+    <h3 style="color: #1e3c72; margin-bottom: 16px; font-size: 20px;">Customer Information</h3>
+    <div class="receipt-row"><span class="receipt-label">Full Name:</span> <span class="receipt-value" id="receipt_fullname"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Email:</span> <span class="receipt-value" id="receipt_email"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Mobile:</span> <span class="receipt-value" id="receipt_mobile"></span>
+    </div>
+   </div>
+   <div class="receipt-info">
+    <h3 style="color: #1e3c72; margin-bottom: 16px; font-size: 20px;">Event Details</h3>
+    <div class="receipt-row"><span class="receipt-label">Event Type:</span> <span class="receipt-value" id="receipt_event"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Event Date:</span> <span class="receipt-value" id="receipt_eventdate"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Venue:</span> <span class="receipt-value" id="receipt_venue"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Duration:</span> <span class="receipt-value" id="receipt_duration"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Number of Attendees:</span> <span class="receipt-value" id="receipt_attendees"></span>
+    </div>
+   </div>
+   <div class="receipt-info">
+    <h3 style="color: #1e3c72; margin-bottom: 16px; font-size: 20px;">Payment Details</h3>
+    <div class="receipt-row"><span class="receipt-label">Cost Per Person:</span> <span class="receipt-value" id="receipt_costperperson"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Event Cost:</span> <span class="receipt-value" id="receipt_eventcost"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Venue Cost:</span> <span class="receipt-value" id="receipt_venuecost"></span>
+    </div>
+    <div class="receipt-row"><span class="receipt-label">Payment Mode:</span> <span class="receipt-value" id="receipt_payment"></span>
+    </div>
+    <div class="receipt-row" id="upi_row" style="display: none;"><span class="receipt-label">UPI ID:</span> <span class="receipt-value">7013539146@ibl</span>
+    </div>
+   </div>
+   <div class="receipt-total">
+    <div class="receipt-total-label">
+     Total Amount Paid
+    </div>
+    <div class="receipt-total-amount" id="receipt_total"></div>
+   </div>
+   <div class="receipt-footer">
+    <p style="margin-bottom: 12px; font-weight: 600; color: #2c3e50;">Contact Information</p>
+    <p>Phone: 7013539146 | Email: sagarika7013@gmail.com</p>
+    <p style="margin-top: 16px;">Thank you for choosing our event registration service!</p>
+    <p style="margin-top: 8px; font-size: 12px;">This is a computer-generated receipt and does not require a signature.</p>
+   </div>
+  </div>
+
+  <!-- ------------------- SCRIPT: logic, fixes, EmailJS integration ------------------- -->
+  <script>
+    // ---------------------------
+    // QR Code Generator (unchanged)
+    // ---------------------------
+    function generateQRCode(text, canvas) {
+      const ctx = canvas.getContext('2d');
+      const size = 200;
+      const moduleCount = 25;
+      const moduleSize = size / moduleCount;
+      
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = '#000000';
+      
+      const hash = text.split('').reduce((acc, char) => {
+        return ((acc << 5) - acc) + char.charCodeAt(0);
+      }, 0);
+      
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          const seed = (hash + row * moduleCount + col) * 2654435761;
+          const random = (seed % 100) / 100;
+          
+          const isCorner = (row < 7 && col < 7) || (row < 7 && col >= moduleCount - 7) || (row >= moduleCount - 7 && col < 7);
+          const isInnerCorner = (row >= 2 && row < 5 && col >= 2 && col < 5) || 
+                                (row >= 2 && row < 5 && col >= moduleCount - 5 && col < moduleCount - 2) ||
+                                (row >= moduleCount - 5 && row < moduleCount - 2 && col >= 2 && col < 5);
+          
+          if (isCorner && !isInnerCorner) {
+            ctx.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+          } else if (!isCorner && random > 0.5) {
+            ctx.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
+          }
+        }
+      }
+    }
+    
+    // ---------------------------
+    // Global registrations data (unchanged)
+    // ---------------------------
+    let allRegistrations = [];
+    
+    // Data SDK Handler (unchanged)
+    const dataHandler = {
+      onDataChanged(data) {
+        allRegistrations = data;
+        updateDashboard();
+      }
+    };
+    
+    // Initialize Data SDK (unchanged)
+    (async function initDataSdk() {
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to initialize Data SDK');
+        }
+      }
+    })();
+    
+    // ---------------------------
+    // Dashboard update (unchanged)
+    // ---------------------------
+    function updateDashboard() {
+      const totalRegistrations = allRegistrations.length;
+      const totalRevenue = allRegistrations.reduce((sum, reg) => sum + (reg.total_amount || 0), 0);
+      const totalAttendees = allRegistrations.reduce((sum, reg) => sum + (reg.attendees || 0), 0);
+      
+      document.getElementById('totalRegistrations').textContent = totalRegistrations;
+      document.getElementById('totalRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+      document.getElementById('totalAttendees').textContent = totalAttendees;
+      
+      const registrationsList = document.getElementById('registrationsList');
+      
+      if (totalRegistrations === 0) {
+        registrationsList.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 40px;">No registrations yet. Registrations will appear here automatically.</p>';
+        return;
+      }
+      
+      const sortedRegistrations = [...allRegistrations].sort((a, b) => b.timestamp - a.timestamp);
+      
+      registrationsList.innerHTML = sortedRegistrations.map(reg => `
+        <div class="registration-card">
+          <div class="registration-header">
+            <div>
+              <div class="registration-receipt-number">Receipt #${reg.receipt_number}</div>
+              <div class="registration-date">${reg.registration_date}</div>
+            </div>
+            <button class="download-single-btn" onclick="downloadSingleReceipt('${reg.__backendId}')">
+              📥 Download
+            </button>
+          </div>
+          <div class="registration-details">
+            <div class="registration-detail">
+              <div class="registration-detail-label">Name</div>
+              <div class="registration-detail-value">${reg.full_name}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Email</div>
+              <div class="registration-detail-value">${reg.email}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Mobile</div>
+              <div class="registration-detail-value">${reg.mobile}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Event Type</div>
+              <div class="registration-detail-value">${reg.event_type}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Event Date</div>
+              <div class="registration-detail-value">${reg.event_date}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Venue</div>
+              <div class="registration-detail-value">${reg.venue}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Duration</div>
+              <div class="registration-detail-value">${reg.duration}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Attendees</div>
+              <div class="registration-detail-value">${reg.attendees}</div>
+            </div>
+            <div class="registration-detail">
+              <div class="registration-detail-label">Payment Mode</div>
+              <div class="registration-detail-value">${reg.payment_mode}</div>
+            </div>
+          </div>
+          <div class="registration-footer">
+            <div class="registration-total">Total: ₹${reg.total_amount.toLocaleString('en-IN')}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Download single receipt (unchanged)
+    function downloadSingleReceipt(backendId) {
+      const registration = allRegistrations.find(reg => reg.__backendId === backendId);
+      if (!registration) return;
+      
+      generateAndDownloadReceipt(registration);
+    }
+    
+    // Show inline message (unchanged)
+    function showInlineMessage(message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = message;
+      messageDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #1e3c72; color: white; padding: 16px 24px; border-radius: 10px; font-weight: 600; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+      document.body.appendChild(messageDiv);
+      
+      setTimeout(() => {
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => messageDiv.remove(), 300);
+      }, 3000);
+    }
+    
+    // ---------------------------
+    // Generate and download receipt (unchanged but used for both organizer & user)
+    // ---------------------------
+    function generateAndDownloadReceipt(registration) {
+      const receiptHTML = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt #${registration.receipt_number}</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+    .receipt-header { text-align: center; border-bottom: 3px solid #1e3c72; padding-bottom: 20px; margin-bottom: 30px; }
+    .receipt-title { font-size: 32px; font-weight: 800; color: #1e3c72; margin-bottom: 8px; }
+    .receipt-subtitle { font-size: 16px; color: #5a6c7d; }
+    .receipt-info { margin-bottom: 30px; }
+    .receipt-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e0e6ed; }
+    .receipt-label { font-weight: 600; color: #2c3e50; }
+    .receipt-value { color: #34495e; }
+    .receipt-total { background: #f8f9fa; padding: 20px; margin-top: 20px; border-radius: 10px; text-align: center; }
+    .receipt-total-label { font-size: 18px; font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+    .receipt-total-amount { font-size: 36px; font-weight: 800; color: #1e3c72; }
+    .receipt-footer { margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e6ed; text-align: center; color: #7f8c8d; font-size: 14px; }
+    h3 { color: #1e3c72; margin-bottom: 16px; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <div class="receipt-header">
+    <div class="receipt-title">EVENT REGISTRATION RECEIPT</div>
+    <div class="receipt-subtitle">Premium Event Registration System</div>
+    <div style="margin-top: 12px; font-size: 14px; color: #7f8c8d;">
+      Receipt #${registration.receipt_number} | Date: ${registration.registration_date}
+    </div>
+  </div>
+  
+  <div class="receipt-info">
+    <h3>Customer Information</h3>
+    <div class="receipt-row">
+      <span class="receipt-label">Full Name:</span>
+      <span class="receipt-value">${registration.full_name}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Email:</span>
+      <span class="receipt-value">${registration.email}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Mobile:</span>
+      <span class="receipt-value">${registration.mobile}</span>
+    </div>
+  </div>
+  
+  <div class="receipt-info">
+    <h3>Event Details</h3>
+    <div class="receipt-row">
+      <span class="receipt-label">Event Type:</span>
+      <span class="receipt-value">${registration.event_type}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Event Date:</span>
+      <span class="receipt-value">${registration.event_date}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Venue:</span>
+      <span class="receipt-value">${registration.venue}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Duration:</span>
+      <span class="receipt-value">${registration.duration}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Number of Attendees:</span>
+      <span class="receipt-value">${registration.attendees}</span>
+    </div>
+  </div>
+  
+  <div class="receipt-info">
+    <h3>Payment Details</h3>
+    <div class="receipt-row">
+      <span class="receipt-label">Cost Per Person:</span>
+      <span class="receipt-value">₹${registration.cost_per_person}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Event Cost:</span>
+      <span class="receipt-value">₹${registration.event_cost.toLocaleString('en-IN')}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Venue Cost:</span>
+      <span class="receipt-value">₹${registration.venue_cost.toLocaleString('en-IN')}</span>
+    </div>
+    <div class="receipt-row">
+      <span class="receipt-label">Payment Mode:</span>
+      <span class="receipt-value">${registration.payment_mode}</span>
+    </div>
+    ${registration.payment_mode && registration.payment_mode.toString().toLowerCase().includes('upi') ? '<div class="receipt-row"><span class="receipt-label">UPI ID:</span><span class="receipt-value">7013539146@ibl</span></div>' : ''}
+  </div>
+  
+  <div class="receipt-total">
+    <div class="receipt-total-label">Total Amount Paid</div>
+    <div class="receipt-total-amount">₹${registration.total_amount.toLocaleString('en-IN')}</div>
+  </div>
+  
+  <div class="receipt-footer">
+    <p style="margin-bottom: 12px; font-weight: 600; color: #2c3e50;">Contact Information</p>
+    <p>Phone: 7013539146 | Email: sagarika7013@gmail.com</p>
+    <p style="margin-top: 16px;">Thank you for choosing our event registration service!</p>
+    <p style="margin-top: 8px; font-size: 12px;">This is a computer-generated receipt and does not require a signature.</p>
+  </div>
+</body>
+</html>`;
+      
+      const blob = new Blob([receiptHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Receipt_' + registration.receipt_number + '_' + registration.full_name.replace(/\s+/g, '_') + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ---------------------------
+    // Main form logic (updated)
+    // ---------------------------
+    (function() {
+      // Form elements
+      const form = document.getElementById('registrationForm');
+      const fullNameInput = document.getElementById('fullName');
+      const emailInput = document.getElementById('email');
+      const mobileInput = document.getElementById('mobile');
+      const eventTypeSelect = document.getElementById('eventType');
+      const eventDateInput = document.getElementById('eventDate');
+      const venueSelect = document.getElementById('venue');
+      const durationSelect = document.getElementById('duration');
+      const attendeesInput = document.getElementById('attendees');
+      const costPerPersonInput = document.getElementById('costPerPerson');
+      const venueCostInput = document.getElementById('venueCost');
+      const upiRadio = document.getElementById('upi');
+      const codRadio = document.getElementById('cod');
+      const upiSection = document.getElementById('upiSection');
+      const submitBtn = document.getElementById('submit_btn');
+      
+      // Summary elements
+      const summaryName = document.getElementById('summary_name');
+      const summaryEmail = document.getElementById('summary_email');
+      const summaryMobile = document.getElementById('summary_mobile');
+      const summaryEvent = document.getElementById('summary_event');
+      const summaryDate = document.getElementById('summary_date');
+      const summaryVenue = document.getElementById('summary_venue');
+      const summaryDuration = document.getElementById('summary_duration');
+      const summaryAttendees = document.getElementById('summary_attendees');
+      const summaryCost = document.getElementById('summary_cost');
+      const summaryVenueCost = document.getElementById('summary_venue_cost');
+      const summaryPayment = document.getElementById('summary_payment');
+      const totalAmount = document.getElementById('total_amount');
+      
+      // Modal
+      const successModal = document.getElementById('successModal');
+      const closeModalBtn = document.getElementById('closeModal');
+      const downloadReceiptBtn = document.getElementById('downloadReceipt');
+      const payNowBtn = document.getElementById('payNowBtn');
+      
+      // Receipt data storage
+      let currentReceiptData = null;
+      // Track whether user clicked UPI open button
+      let upiClicked = false;
+      
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      eventDateInput.setAttribute('min', today);
+      
+      // Update summary in real-time (fixed venue cost calc)
+      function updateSummary() {
+        summaryName.textContent = fullNameInput.value.trim() || '—';
+        summaryEmail.textContent = emailInput.value.trim() || '—';
+        summaryMobile.textContent = mobileInput.value.trim() || '—';
+        
+        const selectedEvent = eventTypeSelect.options[eventTypeSelect.selectedIndex];
+        summaryEvent.textContent = selectedEvent.value || '—';
+        
+        if (eventDateInput.value) {
+          const date = new Date(eventDateInput.value);
+          summaryDate.textContent = date.toLocaleDateString('en-IN', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+          });
+        } else {
+          summaryDate.textContent = '—';
+        }
+        
+        summaryVenue.textContent = venueSelect.value || '—';
+        summaryDuration.textContent = durationSelect.value || '—';
+        summaryAttendees.textContent = attendeesInput.value || '—';
+        
+        const paymentMode = document.querySelector('input[name="paymentMode"]:checked');
+        summaryPayment.textContent = paymentMode ? paymentMode.value : '—';
+        
+        // Calculate event cost
+        const costPerPerson = selectedEvent && selectedEvent.dataset && selectedEvent.dataset.cost ? parseInt(selectedEvent.dataset.cost) : 150;
+        const attendees = parseInt(attendeesInput.value) || 0;
+        const eventCost = costPerPerson * attendees;
+        
+        // FIXED: Calculate venue cost based on base cost and duration multiplier (consistently used everywhere)
+        const selectedVenue = venueSelect.options[venueSelect.selectedIndex];
+        const venueBaseCost = selectedVenue && selectedVenue.dataset && selectedVenue.dataset.baseCost ? parseInt(selectedVenue.dataset.baseCost) : 2000;
+        const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+        const durationMultiplier = selectedDuration && selectedDuration.dataset && selectedDuration.dataset.multiplier ? parseFloat(selectedDuration.dataset.multiplier) : 0;
+        const venueCost = Math.round(venueBaseCost * durationMultiplier);
+        
+        const total = eventCost + venueCost;
+        
+        summaryCost.textContent = '₹' + costPerPerson;
+        costPerPersonInput.value = '₹' + costPerPerson;
+        summaryVenueCost.textContent = '₹' + venueCost.toLocaleString('en-IN');
+        venueCostInput.value = '₹' + venueCost.toLocaleString('en-IN');
+        totalAmount.textContent = '₹' + total.toLocaleString('en-IN');
+        
+        // Update UPI amount display
+        const upiAmountDisplay = document.getElementById('upiAmountDisplay');
+        if (upiAmountDisplay) {
+          upiAmountDisplay.textContent = '₹' + total.toLocaleString('en-IN');
+        }
+        
+        // Generate QR code when UPI is selected and amount is calculated
+        if (upiRadio.checked && total > 0) {
+          const qrCanvas = document.getElementById('qrCodeCanvas');
+          if (qrCanvas) {
+            const upiString = 'upi://pay?pa=7013539146@ibl&pn=Event Registration&am=' + total + '&cu=INR&tn=Event Registration Payment';
+            generateQRCode(upiString, qrCanvas);
+          }
+        }
+      }
+      
+      // Show/hide UPI section
+      function toggleUpiSection() {
+        if (upiRadio.checked) {
+          upiSection.classList.add('show');
+        } else {
+          upiSection.classList.remove('show');
+        }
+      }
+      
+      // Validation functions (unchanged)
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+      
+      function validateMobile(mobile) {
+        const re = /^[6-9]\d{9}$/;
+        return re.test(mobile);
+      }
+      
+      function showError(fieldId, show) {
+        const field = document.getElementById(fieldId);
+        const error = document.getElementById('error_' + fieldId);
+        
+        if (show) {
+          if (field) field.classList.add('error');
+          if (error) error.classList.add('show');
+        } else {
+          if (field) field.classList.remove('error');
+          if (error) error.classList.remove('show');
+        }
+      }
+      
+      function validateForm() {
+        let isValid = true;
+        
+        // Full Name
+        if (!fullNameInput.value.trim()) {
+          showError('fullName', true);
+          isValid = false;
+        } else {
+          showError('fullName', false);
+        }
+        
+        // Email
+        if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
+          showError('email', true);
+          isValid = false;
+        } else {
+          showError('email', false);
+        }
+        
+        // Mobile
+        if (!mobileInput.value.trim() || !validateMobile(mobileInput.value.trim())) {
+          showError('mobile', true);
+          isValid = false;
+        } else {
+          showError('mobile', false);
+        }
+        
+        // Event Type
+        if (!eventTypeSelect.value) {
+          showError('eventType', true);
+          isValid = false;
+        } else {
+          showError('eventType', false);
+        }
+        
+        // Event Date
+        if (!eventDateInput.value) {
+          showError('eventDate', true);
+          isValid = false;
+        } else {
+          showError('eventDate', false);
+        }
+        
+        // Venue
+        if (!venueSelect.value) {
+          showError('venue', true);
+          isValid = false;
+        } else {
+          showError('venue', false);
+        }
+        
+        // Duration
+        if (!durationSelect.value) {
+          showError('duration', true);
+          isValid = false;
+        } else {
+          showError('duration', false);
+        }
+        
+        // Attendees
+        if (!attendeesInput.value || parseInt(attendeesInput.value) < 1) {
+          showError('attendees', true);
+          isValid = false;
+        } else {
+          showError('attendees', false);
+        }
+        
+        // Payment Mode
+        const paymentMode = document.querySelector('input[name="paymentMode"]:checked');
+        if (!paymentMode) {
+          showError('paymentMode', true);
+          isValid = false;
+        } else {
+          showError('paymentMode', false);
+        }
+        
+        return isValid;
+      }
+      
+      // UPI Payment Handler (improved)
+      payNowBtn.addEventListener('click', function() {
+        const selectedEvent = eventTypeSelect.options[eventTypeSelect.selectedIndex];
+        const costPerPerson = selectedEvent && selectedEvent.dataset.cost ? parseInt(selectedEvent.dataset.cost) : 150;
+        const attendees = parseInt(attendeesInput.value) || 0;
+        const eventCost = costPerPerson * attendees;
+        
+        // Calculate venue cost (consistent method)
+        const selectedVenue = venueSelect.options[venueSelect.selectedIndex];
+        const venueBaseCost = selectedVenue && selectedVenue.dataset.baseCost ? parseInt(selectedVenue.dataset.baseCost) : 2000;
+        const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+        const durationMultiplier = selectedDuration && selectedDuration.dataset.multiplier ? parseFloat(selectedDuration.dataset.multiplier) : 0;
+        const venueCost = Math.round(venueBaseCost * durationMultiplier);
+        
+        const total = eventCost + venueCost;
+        
+        if (total <= 0) {
+          showInlineMessage('Please fill in all details to calculate the payment amount.');
+          return;
+        }
+        
+        // UPI link
+        const upiId = '7013539146@ibl';
+        const payeeName = 'Event Registration';
+        const transactionNote = 'Event Registration Payment';
+        
+        const upiLink = 'upi://pay?pa=' + encodeURIComponent(upiId) + 
+                       '&pn=' + encodeURIComponent(payeeName) + 
+                       '&am=' + total + 
+                       '&cu=INR' + 
+                       '&tn=' + encodeURIComponent(transactionNote);
+        
+        // set flag that user clicked to open UPI
+        upiClicked = true;
+        // store timestamp for reference
+        sessionStorage.setItem('upiClickedAt', Date.now().toString());
+        sessionStorage.setItem('upiAmount', total.toString());
+        
+        // Open UPI payment link
+        window.open(upiLink, '_blank');
+        
+        showInlineMessage('Opening your UPI app to pay ₹' + total.toLocaleString('en-IN') + '...');
+      });
+      
+      // Event listeners (unchanged except updateSummary usage)
+      fullNameInput.addEventListener('input', updateSummary);
+      emailInput.addEventListener('input', updateSummary);
+      mobileInput.addEventListener('input', updateSummary);
+      eventTypeSelect.addEventListener('change', updateSummary);
+      eventDateInput.addEventListener('change', updateSummary);
+      venueSelect.addEventListener('change', function() {
+        updateSummary();
+        // Regenerate QR code if UPI is selected
+        if (upiRadio.checked) {
+          const qrCanvas = document.getElementById('qrCodeCanvas');
+          const selectedEvent = eventTypeSelect.options[eventTypeSelect.selectedIndex];
+          const costPerPerson = selectedEvent && selectedEvent.dataset.cost ? parseInt(selectedEvent.dataset.cost) : 150;
+          const attendees = parseInt(attendeesInput.value) || 0;
+          const eventCost = costPerPerson * attendees;
+          const selectedVenue = venueSelect.options[venueSelect.selectedIndex];
+          const venueBaseCost = selectedVenue && selectedVenue.dataset.baseCost ? parseInt(selectedVenue.dataset.baseCost) : 2000;
+          const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+          const durationMultiplier = selectedDuration && selectedDuration.dataset.multiplier ? parseFloat(selectedDuration.dataset.multiplier) : 0;
+          const venueCost = Math.round(venueBaseCost * durationMultiplier);
+          const total = eventCost + venueCost;
+          if (qrCanvas && total > 0) {
+            const upiString = 'upi://pay?pa=7013539146@ibl&pn=Event Registration&am=' + total + '&cu=INR&tn=Event Registration Payment';
+            generateQRCode(upiString, qrCanvas);
+          }
+        }
+      });
+      durationSelect.addEventListener('change', function() {
+        updateSummary();
+        // Regenerate QR code if UPI is selected
+        if (upiRadio.checked) {
+          const qrCanvas = document.getElementById('qrCodeCanvas');
+          const selectedEvent = eventTypeSelect.options[eventTypeSelect.selectedIndex];
+          const costPerPerson = selectedEvent && selectedEvent.dataset.cost ? parseInt(selectedEvent.dataset.cost) : 150;
+          const attendees = parseInt(attendeesInput.value) || 0;
+          const eventCost = costPerPerson * attendees;
+          const selectedVenue = venueSelect.options[venueSelect.selectedIndex];
+          const venueBaseCost = selectedVenue && selectedVenue.dataset.baseCost ? parseInt(selectedVenue.dataset.baseCost) : 2000;
+          const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+          const durationMultiplier = selectedDuration && selectedDuration.dataset.multiplier ? parseFloat(selectedDuration.dataset.multiplier) : 0;
+          const venueCost = Math.round(venueBaseCost * durationMultiplier);
+          const total = eventCost + venueCost;
+          if (qrCanvas && total > 0) {
+            const upiString = 'upi://pay?pa=7013539146@ibl&pn=Event Registration&am=' + total + '&cu=INR&tn=Event Registration Payment';
+            generateQRCode(upiString, qrCanvas);
+          }
+        }
+      });
+      attendeesInput.addEventListener('input', updateSummary);
+      upiRadio.addEventListener('change', function() {
+        toggleUpiSection();
+        updateSummary();
+      });
+      codRadio.addEventListener('change', function() {
+        toggleUpiSection();
+        updateSummary();
+      });
+      
+      // ---------------------------
+      // Form submission (FIXED calculation + email sending + reset timing)
+      // ---------------------------
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+          return;
+        }
+        
+        // Disable submit button
+        submitBtn.disabled = true;
+        const submitBtnText = document.getElementById('submit_button_text');
+        if (submitBtnText) {
+          submitBtnText.textContent = 'Processing...';
+        } else {
+          submitBtn.textContent = 'Processing...';
+        }
+        
+        // Collect form data (use consistent cost method)
+        const selectedEvent = eventTypeSelect.options[eventTypeSelect.selectedIndex];
+        const costPerPerson = selectedEvent && selectedEvent.dataset.cost ? parseInt(selectedEvent.dataset.cost) : 150;
+        const selectedVenue = venueSelect.options[venueSelect.selectedIndex];
+        const venueBaseCost = selectedVenue && selectedVenue.dataset && selectedVenue.dataset.baseCost ? parseInt(selectedVenue.dataset.baseCost) : (selectedVenue && selectedVenue.dataset ? parseInt(selectedVenue.dataset.baseCost) : 0);
+        const selectedDuration = durationSelect.options[durationSelect.selectedIndex];
+        const durationMultiplier = selectedDuration && selectedDuration.dataset && selectedDuration.dataset.multiplier ? parseFloat(selectedDuration.dataset.multiplier) : 0;
+        const venueCost = Math.round(venueBaseCost * durationMultiplier);
+        const attendees = parseInt(attendeesInput.value) || 0;
+        const eventCost = costPerPerson * attendees;
+        const total = eventCost + venueCost;
+        const paymentModeRaw = document.querySelector('input[name="paymentMode"]:checked').value;
+        
+        // Determine payment mode string: if UPI and user has clicked to open UPI, mark accordingly
+        let paymentModeFinal = paymentModeRaw;
+        if (paymentModeRaw === 'UPI') {
+          if (upiClicked) {
+            paymentModeFinal = 'UPI (payment initiated)';
+          } else {
+            paymentModeFinal = 'UPI (pending)';
+          }
+        }
+        
+        const formData = {
+          fullName: fullNameInput.value.trim(),
+          email: emailInput.value.trim(),
+          mobile: mobileInput.value.trim(),
+          eventType: eventTypeSelect.value,
+          eventDate: new Date(eventDateInput.value).toLocaleDateString('en-IN', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+          }),
+          venue: venueSelect.value,
+          duration: durationSelect.value,
+          attendees: attendees,
+          costPerPerson: '₹' + costPerPerson,
+          eventCost: '₹' + eventCost.toLocaleString('en-IN'),
+          venueCost: '₹' + venueCost.toLocaleString('en-IN'),
+          paymentMode: paymentModeFinal,
+          total: '₹' + total.toLocaleString('en-IN')
+        };
+        
+        // Save to Data SDK and process
+        setTimeout(async function() {
+          const receiptNumber = 'EVT' + Date.now();
+          const registrationDate = new Date().toLocaleDateString('en-IN', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          // Prepare data for storage (use numeric totals for dashboard)
+          const registrationData = {
+            receipt_number: receiptNumber,
+            registration_date: registrationDate,
+            full_name: formData.fullName,
+            email: formData.email,
+            mobile: formData.mobile,
+            event_type: formData.eventType,
+            event_date: formData.eventDate,
+            venue: formData.venue,
+            duration: formData.duration,
+            attendees: formData.attendees,
+            cost_per_person: costPerPerson,
+            event_cost: eventCost,
+            venue_cost: venueCost,
+            payment_mode: paymentModeFinal,
+            total_amount: total,
+            timestamp: Date.now()
+          };
+          
+          // Save to Data SDK (if available)
+          if (window.dataSdk) {
+            submitBtn.textContent = 'Saving registration...';
+            const result = await window.dataSdk.create(registrationData);
+            
+            if (result.isOk) {
+              // store backend id if present
+              if (result.record && result.record.__backendId) {
+                registrationData.__backendId = result.record.__backendId;
+              }
+              
+              // Generate receipt for immediate download for organizer (keeps original behaviour)
+              currentReceiptData = {
+                receiptNumber: receiptNumber,
+                receiptDate: registrationDate,
+                formData: registrationData
+              };
+              
+              // Auto-download receipt for organizer (retain original behaviour)
+              setTimeout(function() {
+                generateAndDownloadReceipt(registrationData);
+                showInlineMessage('Receipt automatically downloaded for organizer!');
+              }, 500);
+              
+              // Send emails to customer & organizer (EmailJS)
+              try {
+                await sendEmails(registrationData);
+                showInlineMessage('Confirmation emails sent to customer and organizer.');
+              } catch (err) {
+                console.error('Email sending failed', err);
+                showInlineMessage('Warning: Email sending failed. Check EmailJS configuration.');
+              }
+              
+              // Show success modal to user (they can download receipt)
+              // Populate receipt hidden template fields for user download if wanted
+              document.getElementById('receipt_number').textContent = registrationData.receipt_number;
+              document.getElementById('receipt_date').textContent = registrationData.registration_date;
+              document.getElementById('receipt_fullname').textContent = registrationData.full_name;
+              document.getElementById('receipt_email').textContent = registrationData.email;
+              document.getElementById('receipt_mobile').textContent = registrationData.mobile;
+              document.getElementById('receipt_event').textContent = registrationData.event_type;
+              document.getElementById('receipt_eventdate').textContent = registrationData.event_date;
+              document.getElementById('receipt_venue').textContent = registrationData.venue;
+              document.getElementById('receipt_duration').textContent = registrationData.duration;
+              document.getElementById('receipt_attendees').textContent = registrationData.attendees;
+              document.getElementById('receipt_costperperson').textContent = '₹' + registrationData.cost_per_person;
+              document.getElementById('receipt_eventcost').textContent = '₹' + registrationData.event_cost.toLocaleString('en-IN');
+              document.getElementById('receipt_venuecost').textContent = '₹' + registrationData.venue_cost.toLocaleString('en-IN');
+              document.getElementById('receipt_payment').textContent = registrationData.payment_mode;
+              document.getElementById('receipt_total').textContent = '₹' + registrationData.total_amount.toLocaleString('en-IN');
+              
+              // show upi row only if upi was used
+              const upi_row = document.getElementById('upi_row');
+              if (registrationData.payment_mode && registrationData.payment_mode.toLowerCase().includes('upi')) {
+                if (upi_row) upi_row.style.display = 'flex';
+              } else {
+                if (upi_row) upi_row.style.display = 'none';
+              }
+              
+              successModal.classList.add('show');
+              
+              // Do NOT reset the form immediately — allow user to download or close modal.
+              // Re-enable submit button and restore text
+              submitBtn.disabled = false;
+              if (submitBtnText) {
+                submitBtnText.textContent = 'Complete Registration & Payment';
+              } else {
+                submitBtn.textContent = 'Complete Registration & Payment';
+              }
+              
+              // Reset upiClicked flag after submission (so next registration starts fresh)
+              upiClicked = false;
+              sessionStorage.removeItem('upiClickedAt');
+              sessionStorage.removeItem('upiAmount');
+              
+            } else {
+              // Show error
+              submitBtn.disabled = false;
+              if (submitBtnText) {
+                submitBtnText.textContent = 'Complete Registration & Payment';
+              } else {
+                submitBtn.textContent = 'Complete Registration & Payment';
+              }
+              showInlineMessage('Error saving registration. Please try again.');
+            }
+          } else {
+            // If no dataSdk present: still generate receipt and send emails (graceful fallback)
+            currentReceiptData = {
+              receiptNumber: receiptNumber,
+              receiptDate: registrationDate,
+              formData: registrationData
+            };
+            
+            // Download organizer copy
+            setTimeout(function() {
+              generateAndDownloadReceipt(registrationData);
+              showInlineMessage('Receipt downloaded for organizer (no Data SDK).');
+            }, 400);
+            
+            try {
+              await sendEmails(registrationData);
+              showInlineMessage('Confirmation emails sent to customer and organizer.');
+            } catch (err) {
+              console.error('Email sending failed', err);
+              showInlineMessage('Warning: Email sending failed. Check EmailJS configuration.');
+            }
+            
+            // Show modal and re-enable submit
+            successModal.classList.add('show');
+            submitBtn.disabled = false;
+            if (submitBtnText) {
+              submitBtnText.textContent = 'Complete Registration & Payment';
+            } else {
+              submitBtn.textContent = 'Complete Registration & Payment';
+            }
+            upiClicked = false;
+            sessionStorage.removeItem('upiClickedAt');
+            sessionStorage.removeItem('upiAmount');
+          }
+        }, 500);
+      });
+      
+      // Download receipt button (user download)
+      downloadReceiptBtn.addEventListener('click', function() {
+        // If we have the data from last registration, generate a receipt for user download
+        if (currentReceiptData && currentReceiptData.formData) {
+          generateAndDownloadReceipt(currentReceiptData.formData);
+          showInlineMessage('Receipt downloaded.');
+        } else {
+          showInlineMessage('No receipt available to download.');
+        }
+      });
+      
+      // Close modal
+      closeModalBtn.addEventListener('click', function() {
+        successModal.classList.remove('show');
+        // After user closes modal, we can safely reset the form
+        form.reset();
+        updateSummary();
+        upiSection.classList.remove('show');
+      });
+      
+      // Close modal on outside click
+      successModal.addEventListener('click', function(e) {
+        if (e.target === successModal) {
+          successModal.classList.remove('show');
+          form.reset();
+          updateSummary();
+          upiSection.classList.remove('show');
+        }
+      });
+      
+      // Initialize summary on load
+      updateSummary();
+    })();
+    
+    // ---------------------------
+    // EmailJS helper: send both emails
+    // ---------------------------
+    async function sendEmails(registrationData) {
+      // Build a small HTML snippet for receipt to include in email body/template param
+      const receiptBasicHTML = `
+        <h2>Event Registration Receipt</h2>
+        <p><strong>Receipt #:</strong> ${registrationData.receipt_number}</p>
+        <p><strong>Date:</strong> ${registrationData.registration_date}</p>
+        <h3>Customer</h3>
+        <p>${registrationData.full_name} — ${registrationData.email} — ${registrationData.mobile}</p>
+        <h3>Event</h3>
+        <p>${registrationData.event_type} on ${registrationData.event_date}</p>
+        <p>Venue: ${registrationData.venue} — Duration: ${registrationData.duration}</p>
+        <p>Attendees: ${registrationData.attendees}</p>
+        <h3>Payment</h3>
+        <p>Cost per person: ₹${registrationData.cost_per_person}</p>
+        <p>Event cost: ₹${registrationData.event_cost.toLocaleString('en-IN')}</p>
+        <p>Venue cost: ₹${registrationData.venue_cost.toLocaleString('en-IN')}</p>
+        <p><strong>Total: ₹${registrationData.total_amount.toLocaleString('en-IN')}</strong></p>
+        <p>Payment mode: ${registrationData.payment_mode}</p>
+      `;
+      
+      // EmailJS: replace these IDs with your service and template IDs
+      const SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+      const TEMPLATE_CUSTOMER = 'YOUR_EMAILJS_TEMPLATE_CUSTOMER'; // template for customer
+      const TEMPLATE_ORGANIZER = 'YOUR_EMAILJS_TEMPLATE_ORGANIZER'; // template for organizer
+      
+      // Template params — adapt to your template fields
+      const customerParams = {
+        to_email: registrationData.email,
+        to_name: registrationData.full_name,
+        receipt_html: receiptBasicHTML,
+        receipt_number: registrationData.receipt_number,
+        registration_date: registrationData.registration_date,
+        total_amount: '₹' + registrationData.total_amount.toLocaleString('en-IN'),
+        event_title: registrationData.event_type,
+        venue: registrationData.venue,
+        duration: registrationData.duration,
+        attendees: registrationData.attendees,
+        payment_mode: registrationData.payment_mode
+      };
+      
+      const organizerParams = {
+        admin_email: 'sagarika7013@gmail.com',
+        customer_name: registrationData.full_name,
+        customer_email: registrationData.email,
+        customer_mobile: registrationData.mobile,
+        receipt_html: receiptBasicHTML,
+        receipt_number: registrationData.receipt_number,
+        total_amount: '₹' + registrationData.total_amount.toLocaleString('en-IN'),
+        event_title: registrationData.event_type
+      };
+      
+      // Send to customer
+      const p1 = new Promise((resolve, reject) => {
+        if (!window.emailjs) return reject('EmailJS not loaded');
+        emailjs.send(SERVICE_ID, TEMPLATE_CUSTOMER, customerParams)
+          .then(function(response) {
+            resolve(response);
+          }, function(error) {
+            reject(error);
+          });
+      });
+      
+      // Send to organizer
+      const p2 = new Promise((resolve, reject) => {
+        if (!window.emailjs) return reject('EmailJS not loaded');
+        emailjs.send(SERVICE_ID, TEMPLATE_ORGANIZER, organizerParams)
+          .then(function(response) {
+            resolve(response);
+          }, function(error) {
+            reject(error);
+          });
+      });
+      
+      // Wait for both
+      return Promise.all([p1, p2]);
+    }
+    
+    // ---------------------------
+    // Element SDK Integration (unchanged)
+    // ---------------------------
+    (function() {
+      if (!window.elementSdk) {
+        return;
+      }
+      
+      const defaultConfig = {
+        site_title: "Premium Event Registration",
+        site_tagline: "Book Your Perfect Event Experience Today",
+        form_heading: "Event Registration Form",
+        submit_button_text: "Complete Registration & Payment",
+        success_message: "Thank you for registering! Confirmation emails have been sent to both you and our event organizer. We look forward to seeing you at the event!",
+        background_color: "#2a5298",
+        surface_color: "#ffffff",
+        text_color: "#1a1a2e",
+        primary_action_color: "#ffd93d",
+        secondary_action_color: "#1e3c72",
+        font_family: "Poppins",
+        font_size: 15
+      };
+      
+      async function onConfigChange(config) {
+        const cfg = Object.assign({}, defaultConfig, config || {});
+        
+        // Update text content
+        const siteTitleEl = document.getElementById('site_title');
+        const siteTaglineEl = document.getElementById('site_tagline');
+        const formHeadingEl = document.getElementById('form_heading');
+        const submitBtnTextEl = document.getElementById('submit_button_text');
+        const successMessageEl = document.getElementById('success_message');
+        
+        if (siteTitleEl) siteTitleEl.textContent = cfg.site_title;
+        if (siteTaglineEl) siteTaglineEl.textContent = cfg.site_tagline;
+        if (submitBtnTextEl) submitBtnTextEl.textContent = cfg.submit_button_text;
+        if (successMessageEl) successMessageEl.textContent = cfg.success_message;
+        
+        // Update colors
+        const bodyEl = document.body;
+        if (bodyEl) {
+          bodyEl.style.background = 'linear-gradient(135deg, ' + cfg.background_color + ' 0%, ' + cfg.secondary_action_color + ' 100%)';
+        }
+        
+        const surfaces = document.querySelectorAll('.form-container, .summary-card, header, .modal-content');
+        surfaces.forEach(function(el) {
+          el.style.backgroundColor = cfg.surface_color;
+        });
+        
+        const textElements = document.querySelectorAll('h1, h2, h3, label, .summary-label, .summary-value, .venue-name, .modal-title');
+        textElements.forEach(function(el) {
+          el.style.color = cfg.text_color;
+        });
+        
+        const primaryButtons = document.querySelectorAll('.submit-btn, .total-amount');
+        primaryButtons.forEach(function(el) {
+          el.style.background = 'linear-gradient(135deg, ' + cfg.primary_action_color + ', #ffb800)';
+        });
+        
+        const secondaryElements = document.querySelectorAll('.modal-btn');
+        secondaryElements.forEach(function(el) {
+          el.style.background = 'linear-gradient(135deg, ' + cfg.secondary_action_color + ', ' + cfg.background_color + ')';
+        });
+        
+        // Update font
+        const baseFont = cfg.font_family || defaultConfig.font_family;
+        const baseSize = Number(cfg.font_size || defaultConfig.font_size);
+        
+        const allText = document.querySelectorAll('body, h1, h2, h3, label, input, select, button, p, div');
+        allText.forEach(function(el) {
+          el.style.fontFamily = baseFont + ', \"Poppins\", \"Inter\", sans-serif';
+        });
+        
+        // Scale fonts
+        const h1Elements = document.querySelectorAll('.site-title');
+        h1Elements.forEach(function(el) { el.style.fontSize = (baseSize * 2.8) + 'px'; });
+        
+        const h2Elements = document.querySelectorAll('.form-heading, .modal-title');
+        h2Elements.forEach(function(el) { el.style.fontSize = (baseSize * 1.87) + 'px'; });
+        
+        const h3Elements = document.querySelectorAll('.summary-title');
+        h3Elements.forEach(function(el) { el.style.fontSize = (baseSize * 1.47) + 'px'; });
+        
+        const bodyText = document.querySelectorAll('p, .summary-value, input, select');
+        bodyText.forEach(function(el) { el.style.fontSize = baseSize + 'px'; });
+        
+        const labels = document.querySelectorAll('label, .summary-label');
+        labels.forEach(function(el) { el.style.fontSize = (baseSize * 0.93) + 'px'; });
+        
+        const smallText = document.querySelectorAll('.venue-item, .upi-instruction, .error-message');
+        smallText.forEach(function(el) { el.style.fontSize = (baseSize * 0.87) + 'px'; });
+      }
+      
+      function mapToCapabilities(config) {
+        const cfg = Object.assign({}, defaultConfig, config || {});
+        return {
+          recolorables: [
+            {
+              get: function() { return cfg.background_color; },
+              set: function(value) {
+                window.elementSdk.config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: function() { return cfg.surface_color; },
+              set: function(value) {
+                window.elementSdk.config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: function() { return cfg.text_color; },
+              set: function(value) {
+                window.elementSdk.config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: function() { return cfg.primary_action_color; },
+              set: function(value) {
+                window.elementSdk.config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: function() { return cfg.secondary_action_color; },
+              set: function(value) {
+                window.elementSdk.config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: function() { return cfg.font_family; },
+            set: function(value) {
+              window.elementSdk.config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: function() { return cfg.font_size; },
+            set: function(value) {
+              window.elementSdk.config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        };
+      }
+      
+      function mapToEditPanelValues(config) {
+        const cfg = Object.assign({}, defaultConfig, config || {});
+        return new Map([
+          ['site_title', cfg.site_title],
+          ['site_tagline', cfg.site_tagline],
+          ['form_heading', cfg.form_heading],
+          ['submit_button_text', cfg.submit_button_text],
+          ['success_message', cfg.success_message]
+        ]);
+      }
+      
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: mapToCapabilities,
+        mapToEditPanelValues: mapToEditPanelValues
+      });
+    })();
+  </script>
+
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a5c257923b12e2e',t:'MTc2NDM1NjgyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
